@@ -128,9 +128,7 @@ export default function ThemedSurface(props: Props) {
         </div>
       </div>
 
-      {resolvedChildren() && (
-        <div class={s.content}>{resolvedChildren()}</div>
-      )}
+      {resolvedChildren() && <div class={s.content}>{resolvedChildren()}</div>}
     </div>
   );
 }
