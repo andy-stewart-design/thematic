@@ -1,0 +1,159 @@
+---
+layout: ../components/layout/index.astro
+---
+
+# Thematic
+
+This is my attempt to outline a framework for a simple, flexible theme system for user interfaces. The practical goals of this work is to make adding a new theme a boring, well-defined task, and to make applying that theme at a component level transparent and predictable.
+
+This framework, at the level of abstraction described in this article, intentionally does not prescribe which tokens a theme must require. In other words, it does not attempt to define the **theme contract**—a separate conversation better suited for another day. It instead provides a structure for each project to formalize that contract internally.
+
+## Modes all the way down
+
+The foundational principle of this framework is that every element on a webpage has a **mode**, which describes that element‘s resolved visual context. An element’s mode has three independent yet interrelated variables:
+
+- **Theme**: the full suite of available design tokens
+- **Color scheme**: whether the element is in light or dark mode
+- **Role**: the element‘s expressive contextual function
+
+A useful shorthand is: **the theme provides the options, the role selects an option, and the scheme selects that option‘s light or dark value.**
+
+When we talk about an element‘s mode, we‘re referring to its overall visual context rather than any one specific concern. An element can inherit its mode completely or override any of its three constituent parts individually. Once you are able to resolve all three variables, you can know with certainty how a component should look.
+
+before we get into the details of the system, let‘s look at these ideas in practice. If you prefer to see this demo as a full-page experience, you can do so [here](/simple-example).
+
+<iframe
+  id="inlineFrameExample"
+  title="Inline Frame Example"
+  src="/simple-example"
+/>
+
+## Color Scheme
+
+Let‘s start with the most obvious and well-defined variable in the systm—**color scheme**, which simply resolves whether the element is in light or dark mode. To make maintenance of this variable more maintainable, we‘ll be leaning on CSS‘s `light-dark()` function. An inherited custom property records the active scheme and uses it to set an element‘s `color-scheme` property:
+
+```css
+:where(html) {
+  --active-scheme: light;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --active-scheme: dark;
+  }
+}
+
+[data-scheme] {
+  color-scheme: var(--active-scheme);
+}
+
+[data-scheme="light"] {
+  --active-scheme: light;
+}
+
+[data-scheme="dark"] {
+  --active-scheme: dark;
+}
+```
+
+Without `data-scheme`, the browser follows the system preference. Because these properties inherit, a subtree can override its scheme, and that override will cascade down the tree:
+
+```html
+<html data-scheme="light">
+  <section data-scheme="dark">...</section>
+</html>
+```
+
+One important design requirement of this system is that **all themes must provide both color schemes**. There is no way to support falling back to a default theme without introducing an additional layer of the design tokens, which causes the complexity of the system to grow explonentially and is fundamentally at odds with a core goal of this system.
+
+As such, themes do not need separate light and dark selectors. With `light-dark`, we are able to encapsulate both values in a single token:
+
+```css
+--theme-surface-primary-background: light-dark(white, black);
+```
+
+### Scheme inversion
+
+You may have noticed in the code above that the `--active-scheme` token seemed extraneous. If our ambition for the system stopped at enabling hard-coded light and dark overrides, it would be. However, including it opens up a powerful, additional feature—scheme inversion.
+
+Sometimes a subtree should use the opposite of its inherited scheme, ideally without needing to know whether that scheme is currently light or dark. Using [style queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_size_and_style_queries), we can inspect `--active-scheme` on the parent and set the inverse value:
+
+```css
+@container style(--active-scheme: light) {
+  [data-scheme="inverted"] {
+    --active-scheme: dark;
+  }
+}
+
+@container style(--active-scheme: dark) {
+  [data-scheme="inverted"] {
+    --active-scheme: light;
+  }
+}
+```
+
+For just eight additional lines of CSS, our system becomes dynamic. An inverted subtree becomes dark in a light context and light in a dark context, and nested inversions alternate naturally.
+
+### A note on brower support
+
+To reduce the total number of tokens, this system relies on the `light-dark` function. That feature has been [Baseline since May 2024](https://caniuse.com/?search=light-dark) and should be safe for most projects. If you do need to support older browsers, it [can be transpiled to use pure CSS variables](<https://lightningcss.dev/transpilation.html#light-dark()-color-function>).
+
+Scheme inversion uses an even newer feature—[Style Queries](https://caniuse.com/?search=style+queries)—which is newly Baseline as of 2026. If your project isn‘t able to use the most shit-hot web tech on the market, you can simply omit this small block of CSS and rely on hard-coded values until browser support normalizes.
+
+## Theme and role
+
+Theme and role describe distinct concepts that are nonetheless tightly coupled, so let‘s take them together. A **theme** defines the complete set of colors available to a subtree. It does not, however, decide which color an element uses, and is not intended to be applied directly in user-land CSS.
+
+```css
+:where([data-theme="blue"]) {
+  --theme-surface-primary-background: light-dark(lightblue, darkblue);
+  --theme-surface-secondary-background: light-dark(lightskyblue, mediumblue);
+  --theme-surface-tertiary-background: light-dark(skyblue, blue);
+  --theme-foreground: light-dark(darkblue, lightblue);
+}
+```
+
+A **role** maps part of the active theme contract onto a small, focused set of public tokens that your components actually consume. A role might be **presentational** (a surface or elevation) or express and **intent** (warning, success, information).
+
+```css
+:where([data-role="secondary"]) {
+  --color-background: var(--theme-surface-secondary-background);
+  --color-foreground: var(--theme-foreground);
+}
+```
+
+Crucially, these contextual tokens are the only thing that consumers of this system need to know about. Everything else discussed up until this point are implementation details.
+
+```css
+.card {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+```
+
+### Inheritance and nesting
+
+Two core principles of this system are inheritance and independence. A child element with an explicit theme replaces the palette for its subtree, while generic role mappings continue to propagate unchanged.
+
+In the example below, both child cards have the same role, but each role maps to the palette inherited from its parent.
+
+```html
+<section data-theme="blue">
+  <div class="card" data-role="secondary">...</div>
+</section>
+
+<section data-theme="green">
+  <div class="card" data-role="secondary">...</div>
+</section>
+```
+
+Scheme, theme, and role can therefore change independently at any point in the tree. A nested element may inherit all three, override one, or override all three.
+
+## Bring your own contract
+
+This framework intentionally stops short of prescribing the exact contract for a theme. Different products need different palettes, roles, and levels of expression.
+
+What it does prescribe is the relationship between them. Components consume a stable set of contextual tokens. Roles map those tokens to the active theme. Schemes handle light and dark values. Adding a theme becomes an exercise in filling out a contract rather than revisiting the component library.
+
+That contract is the missing piece, and the subject I’ll take on next time.

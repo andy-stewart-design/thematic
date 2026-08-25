@@ -1,0 +1,52 @@
+.surface {
+    display: grid;
+    gap: 1rem;
+    color: var(--color-foreground-primary);
+    accent-color: var(--color-foreground-primary);
+
+    &[data-root="false"] {
+        background: var(--color-background);
+        border: 1px solid var(--color-border);
+        padding: 1rem;
+    }
+
+    ::selection {
+        background: var(--color-foreground-primary);
+        color: var(--color-background);
+    }
+}
+
+.radiogroups {
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.radiogroup {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.option {
+    display: flex;
+    gap: 0.25rem;
+
+    &:has(input:disabled) {
+        opacity: 0.5;
+        cursor: not-allowed;
+        user-select: none;
+    }
+}
+
+.label {
+    opacity: 1;
+    font-weight: 600;
+    min-width: 11ch;
+}
+
+.content {
+    padding-block-start: 0.5rem;
+    display: grid;
+    gap: 1.5rem;
+}

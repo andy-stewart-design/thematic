@@ -1,0 +1,87 @@
+:where(html) {
+    color-scheme: light dark;
+
+    @media (prefers-color-scheme: dark) {
+        background: black;
+        color: #ddd;
+    }
+}
+
+main {
+    display: grid;
+    gap: 1lh;
+    padding: 2rem 1rem;
+    max-width: 76ch;
+    margin-inline: auto;
+
+    @media (min-width: 960px) {
+        padding: 4rem 2rem;
+    }
+
+    :where(h1, h2) {
+        font-weight: 800;
+        letter-spacing: -0.025em;
+    }
+
+    :where(h3, h4) {
+        font-weight: 800;
+        letter-spacing: -0.0125em;
+    }
+
+    :where(p, li) {
+        font-size: 1rem;
+        text-wrap: pretty;
+
+        code {
+            font-size: 0.84375rem;
+            background: #ddd;
+            padding-inline: 0.25em;
+            border-radius: 3px;
+
+            @media (prefers-color-scheme: dark) {
+                background: #444;
+            }
+        }
+    }
+
+    :where(a) {
+        color: inherit;
+
+        &:visited {
+            color: inherit;
+            text-underline-offset: 2px;
+        }
+    }
+
+    pre {
+        padding: 1rem;
+    }
+
+    iframe {
+        width: 100%;
+        border: none;
+        aspect-ratio: 5/4;
+    }
+}
+
+/*--fs-sm: clamp(0.8rem, 0.17vi + 0.76rem, 0.89rem);
+--fs-base: clamp(1rem, 0.34vi + 0.91rem, 1.19rem);
+--fs-md: clamp(1.25rem, 0.61vi + 1.1rem, 1.58rem);
+--fs-lg: clamp(1.56rem, 1vi + 1.31rem, 2.11rem);
+--fs-xl: clamp(1.95rem, 1.56vi + 1.56rem, 2.81rem);
+--fs-xxl: clamp(2.44rem, 2.38vi + 1.85rem, 3.75rem);
+--fs-xxxl: clamp(3.05rem, 3.54vi + 2.17rem, 5rem);*/
+
+h1 {
+    font-size: clamp(2.44rem, 2.38vi + 1.85rem, 3.75rem);
+}
+
+h2 {
+    font-size: clamp(1.56rem, 1vi + 1.31rem, 2.11rem);
+    margin-top: 0.5lh;
+}
+
+h3 {
+    font-size: clamp(1rem, 1vi + 0.91rem, 1.25rem);
+    margin-top: 0.5lh;
+}
