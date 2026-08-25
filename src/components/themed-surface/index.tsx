@@ -7,10 +7,10 @@ import {
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import {
-  roles,
+  scopes,
   schemes,
   themes,
-  type RoleOption,
+  type ScopeOption,
   type SchemeOption,
   type ThemeOption,
 } from "../simple-example/constants";
@@ -21,7 +21,7 @@ interface Props extends ComponentProps<"div"> {
   mode?: Partial<{
     theme: ThemeOption;
     scheme: SchemeOption;
-    role: RoleOption;
+    scope: ScopeOption;
   }>;
   onModeChange?: ({ type, value }: ModeChangeEvent) => void;
   root?: boolean;
@@ -29,13 +29,13 @@ interface Props extends ComponentProps<"div"> {
 
 type SchemeChangeEvent = { type: "scheme"; value: SchemeOption };
 type ThemeChangeEvent = { type: "theme"; value: ThemeOption };
-type RoleChangeEvent = { type: "role"; value: RoleOption };
-type ModeChangeEvent = SchemeChangeEvent | ThemeChangeEvent | RoleChangeEvent;
+type ScopeChangeEvent = { type: "scope"; value: ScopeOption };
+type ModeChangeEvent = SchemeChangeEvent | ThemeChangeEvent | ScopeChangeEvent;
 
 export default function ThemedSurface(props: Props) {
   const [scheme, setScheme] = createSignal<SchemeOption>(props.mode?.scheme);
   const [theme, setTheme] = createSignal<ThemeOption>(props.mode?.theme);
-  const [role, setRole] = createSignal<RoleOption>(props.mode?.role);
+  const [scope, setScope] = createSignal<ScopeOption>(props.mode?.scope);
   const id = createUniqueId();
   const resolvedChildren = children(() => props.children);
 
@@ -49,7 +49,7 @@ export default function ThemedSurface(props: Props) {
 
     if (e.type === "scheme") setScheme(e.value);
     else if (e.type === "theme") setTheme(e.value);
-    else setRole(e.value);
+    else setScope(e.value);
   }
 
   return (
@@ -58,7 +58,7 @@ export default function ThemedSurface(props: Props) {
       data-root={props.root ?? false}
       data-theme={theme()}
       data-scheme={scheme()}
-      data-role={role()}
+      data-scope={scope()}
     >
       <Dynamic component={titleTag}>{props.title ?? "Child element"}</Dynamic>
 
@@ -107,18 +107,18 @@ export default function ThemedSurface(props: Props) {
         </div>
 
         <div class={s.radiogroup}>
-          <span class={s.label}>Role:</span>
+          <span class={s.label}>Scope:</span>
 
-          <For each={roles}>
+          <For each={scopes}>
             {(option) => (
               <label class={s.option}>
                 <input
                   type="radio"
-                  name={`${id}-role`}
+                  name={`${id}-scope`}
                   value={option.value}
-                  checked={role() === option.value}
+                  checked={scope() === option.value}
                   onChange={() =>
-                    handleChange({ type: "role", value: option.value })
+                    handleChange({ type: "scope", value: option.value })
                   }
                 />
                 {props.root && !option.value ? "Default" : option.label}

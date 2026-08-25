@@ -10,24 +10,28 @@ function SimpleExample() {
         title="Root element"
         root
         onModeChange={(e) => {
-          document.documentElement.dataset[e.type] = e.value;
+          if (e.value === undefined) {
+            delete document.documentElement.dataset[e.type];
+          } else {
+            document.documentElement.dataset[e.type] = e.value;
+          }
         }}
       />
 
-      <ThemedSurface mode={{ role: "secondary" }}>
-        <ThemedSurface mode={{ role: "tertiary" }} />
+      <ThemedSurface mode={{ scope: "secondary" }}>
+        <ThemedSurface mode={{ scope: "tertiary" }} />
       </ThemedSurface>
 
       <ThemedSurface mode={{ theme: "lilac" }}>
-        <ThemedSurface mode={{ theme: "blue", role: "primary" }} />
+        <ThemedSurface mode={{ theme: "blue", scope: "primary" }} />
 
-        <ThemedSurface mode={{ role: "secondary" }}>
-          <ThemedSurface mode={{ role: "tertiary" }} />
+        <ThemedSurface mode={{ scope: "secondary" }}>
+          <ThemedSurface mode={{ scope: "tertiary" }} />
         </ThemedSurface>
 
-        <ThemedSurface mode={{ theme: "green", role: "primary" }}>
-          <ThemedSurface mode={{ role: "secondary" }}>
-            <ThemedSurface mode={{ role: "tertiary" }} />
+        <ThemedSurface mode={{ theme: "green", scope: "primary" }}>
+          <ThemedSurface mode={{ scope: "secondary" }}>
+            <ThemedSurface mode={{ scope: "tertiary" }} />
           </ThemedSurface>
         </ThemedSurface>
       </ThemedSurface>

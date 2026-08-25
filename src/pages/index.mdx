@@ -14,9 +14,9 @@ The foundational principle of this framework is that every element on a webpage 
 
 - **Theme**: the full suite of available design tokens
 - **Color scheme**: whether the element is in light or dark mode
-- **Role**: the element‘s expressive contextual function
+- **Scope**: the element‘s contextual purpose (e.g., surface, success, warning, etc.)
 
-A useful shorthand is: **the theme provides the options, the role selects an option, and the scheme selects that option‘s light or dark value.**
+A useful shorthand is: **the theme provides the options, the scope selects an option, and the scheme selects that option‘s light or dark value.**
 
 When we talk about an element‘s mode, we‘re referring to its overall visual context rather than any one specific concern. An element can inherit its mode completely or override any of its three constituent parts individually. Once you are able to resolve all three variables, you can know with certainty how a component should look.
 
@@ -101,9 +101,9 @@ To reduce the total number of tokens, this system relies on the `light-dark` fun
 
 Scheme inversion uses an even newer feature—[Style Queries](https://caniuse.com/?search=style+queries)—which is newly Baseline as of 2026. If your project isn‘t able to use the most shit-hot web tech on the market, you can simply omit this small block of CSS and rely on hard-coded values until browser support normalizes.
 
-## Theme and role
+## Theme and scope
 
-Theme and role describe distinct concepts that are nonetheless tightly coupled, so let‘s take them together. A **theme** defines the complete set of colors available to a subtree. It does not, however, decide which color an element uses, and is not intended to be applied directly in user-land CSS.
+Theme and scope describe distinct concepts that are nonetheless tightly coupled, so let‘s take them together. A **theme** defines the complete set of colors available to a subtree. It does not, however, decide which color an element uses, and is not intended to be applied directly in user-land CSS.
 
 ```css
 :where([data-theme="blue"]) {
@@ -114,10 +114,10 @@ Theme and role describe distinct concepts that are nonetheless tightly coupled, 
 }
 ```
 
-A **role** maps part of the active theme contract onto a small, focused set of public tokens that your components actually consume. A role might be **presentational** (a surface or elevation) or express and **intent** (warning, success, information).
+A **scope** maps part of the active theme contract onto a small, focused set of public tokens that your components actually consume. A scope might be **presentational** (a surface or elevation) or express and **intent** (warning, success, information).
 
 ```css
-:where([data-role="secondary"]) {
+:where([data-scope="secondary"]) {
   --color-background: var(--theme-surface-secondary-background);
   --color-foreground: var(--theme-foreground);
 }
@@ -132,28 +132,30 @@ Crucially, these contextual tokens are the only thing that consumers of this sys
 }
 ```
 
-### Inheritance and nesting
+This what I mean when I say that applying a theme should be transparent and predictable. Contextual tokens should remain stable regardless of the element‘s current mode.
 
-Two core principles of this system are inheritance and independence. A child element with an explicit theme replaces the palette for its subtree, while generic role mappings continue to propagate unchanged.
+## Inheritance and nesting
 
-In the example below, both child cards have the same role, but each role maps to the palette inherited from its parent.
+Two core principles of this system are inheritance and independence. A child element with an explicit theme replaces the palette for its subtree, while generic scope mappings continue to propagate unchanged.
+
+In the example below, both child cards have the same scope, but each scope maps to the palette inherited from its parent.
 
 ```html
 <section data-theme="blue">
-  <div class="card" data-role="secondary">...</div>
+  <div class="card" data-scope="secondary">...</div>
 </section>
 
 <section data-theme="green">
-  <div class="card" data-role="secondary">...</div>
+  <div class="card" data-scope="secondary">...</div>
 </section>
 ```
 
-Scheme, theme, and role can therefore change independently at any point in the tree. A nested element may inherit all three, override one, or override all three.
+Scheme, theme, and scope can therefore change independently at any point in the tree. A nested element may inherit all three, override one, or override all three.
 
 ## Bring your own contract
 
 This framework intentionally stops short of prescribing the exact contract for a theme. Different products need different palettes, roles, and levels of expression.
 
-What it does prescribe is the relationship between them. Components consume a stable set of contextual tokens. Roles map those tokens to the active theme. Schemes handle light and dark values. Adding a theme becomes an exercise in filling out a contract rather than revisiting the component library.
+What it does prescribe is the relationship between them. Components consume a stable set of contextual tokens. Roles map those tokens to the active theme. Schemes handle light and dark values. Adding a theme becomes an exercise in filling out a contract rather than revisiting the component library. Applying that theme only requires knowledge of a reasonable set of contextual tokens.
 
-That contract is the missing piece, and the subject I’ll take on next time.
+I wanted to use this space to describe the framework in the abstract, unencumbered by the fraught politics of token contract design. From a practical standpoint, though, standardizing the correct contract is critical to the success or failure of this system, and is what I will explore next.

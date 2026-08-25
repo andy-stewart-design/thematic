@@ -63,7 +63,7 @@
 
 /*
  * Themes only define their palette. Because these tokens inherit, a nested
- * theme replaces the palette without being affected by its parent's roles.
+ * theme replaces the palette without being affected by its parent's scopes.
  */
 :where(html, [data-theme="blue"]) {
     --theme-surface-primary-background: light-dark(
@@ -159,27 +159,27 @@
 }
 
 /*
- * Roles map whichever palette they inherit onto the public semantic tokens.
- * A theme element without an explicit role acts as a primary surface.
+ * Scopes map whichever palette they inherit onto the public semantic tokens.
+ * A theme element without an explicit scope acts as a primary surface.
  */
 :where(html) {
     background: var(--color-background);
     color: var(--color-foreground-primary);
 }
 
-:where(html, [data-theme], [data-role="primary"]) {
+:where(html, [data-theme], [data-scope="primary"]) {
     --color-background: var(--theme-surface-primary-background);
     --color-border: var(--theme-surface-primary-border);
     --color-foreground-primary: var(--theme-foreground-primary);
 }
 
-:where([data-role="secondary"]) {
+:where([data-scope="secondary"]) {
     --color-background: var(--theme-surface-secondary-background);
     --color-border: var(--theme-surface-secondary-border);
     --color-foreground-primary: var(--theme-foreground-primary);
 }
 
-:where([data-role="tertiary"]) {
+:where([data-scope="tertiary"]) {
     --color-background: var(--theme-surface-tertiary-background);
     --color-border: var(--theme-surface-tertiary-border);
     --color-foreground-primary: var(--theme-foreground-primary);
