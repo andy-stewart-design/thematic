@@ -114,22 +114,52 @@ Theme and scope describe distinct concepts that are nonetheless tightly coupled,
 }
 ```
 
+In the same way that we default to the user‘s system prefences for color scheme, we should declare a default theme that will be applied in the absence of an explicit override:
+
+```
+:where(html, [data-theme="blue"]) {
+  /* Theme contract */
+}
+```
+
 A **scope** maps part of the active theme contract onto a small, focused set of public tokens that your components actually consume. A scope might be **presentational** (a surface or elevation) or express and **intent** (warning, success, information).
 
 ```css
+/* Default/Primary surface */
+:where(html, [data-theme], [data-scope="primary"]) {
+  --color-background: var(--theme-surface-primary-background);
+  --color-foreground: var(--theme-foreground);
+}
+/* Secondary surface */
 :where([data-scope="secondary"]) {
   --color-background: var(--theme-surface-secondary-background);
   --color-foreground: var(--theme-foreground);
+}
+/* Tertiary surface */
+:where([data-scope="tertiary"]) {
+  --color-background: var(--theme-surface-tertiary-background);
+  --color-foreground: var(--theme-foreground);
+}
+/* Apply default to root */
+:where(html) {
+  background: var(--color-background);
+  color: var(--color-foreground-primary);
 }
 ```
 
 Crucially, these contextual tokens are the only thing that consumers of this system need to know about. Everything else discussed up until this point are implementation details.
 
-```css
-.card {
-  background: var(--color-background);
-  color: var(--color-foreground);
-}
+```html
+<div class="card" data-theme="blue" data-scheme="dark">
+  I will render with a dark blue background and light blue text!
+</div>
+
+<style>
+  .card {
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+</style>
 ```
 
 This what I mean when I say that applying a theme should be transparent and predictable. Contextual tokens should remain stable regardless of the element‘s current mode.
