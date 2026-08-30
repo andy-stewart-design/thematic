@@ -1,0 +1,83 @@
+/*
+ * Schemes determine which value light-dark() selects. Without an explicit
+ * scheme, the root follows the user's system preference.
+ */
+:where(html) {
+    --__active-color-scheme: light;
+    color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        --__active-color-scheme: dark;
+    }
+}
+
+[data-scheme] {
+    color-scheme: var(--__active-color-scheme);
+}
+
+[data-scheme="light"] {
+    --__active-color-scheme: light;
+}
+
+[data-scheme="dark"] {
+    --__active-color-scheme: dark;
+}
+
+@container style(--__active-color-scheme: light) {
+    [data-scheme="inverted"] {
+        --__active-color-scheme: dark;
+    }
+}
+
+@container style(--__active-color-scheme: dark) {
+    [data-scheme="inverted"] {
+        --__active-color-scheme: light;
+    }
+}
+
+/*
+ * Scopes map whichever palette they inherit onto the public semantic tokens.
+ * A theme element without an explicit scope acts as a primary surface.
+ */
+:where(html) {
+    background: var(--color-background);
+    color: var(--color-foreground-primary);
+}
+
+:where(html, [data-theme], [data-scope="primary"]) {
+    --color-background: var(--theme-primary-background);
+    --color-border: var(--theme-primary-border);
+    --color-foreground-primary: var(--theme-primary-foreground-primary);
+    --color-foreground-secondary: var(--theme-primary-foreground-secondary);
+    --color-foreground-tertiary: var(--theme-primary-foreground-tertiary);
+    --color-accent: var(--theme-primary-accent);
+    --color-action-background: var(--theme-primary-action-background);
+    --color-action-border: var(--theme-primary-action-border);
+    --color-action-foreground: var(--theme-primary-action-foreground);
+}
+
+:where([data-scope="secondary"]) {
+    --color-background: var(--theme-secondary-background);
+    --color-border: var(--theme-secondary-border);
+    --color-foreground-primary: var(--theme-secondary-foreground-primary);
+    --color-foreground-secondary: var(--theme-secondary-foreground-secondary);
+    --color-foreground-tertiary: var(--theme-secondary-foreground-tertiary);
+    --color-accent: var(--theme-secondary-accent);
+    --color-action-background: var(--theme-secondary-action-background);
+    --color-action-border: var(--theme-secondary-action-border);
+    --color-action-foreground: var(--theme-secondary-action-foreground);
+}
+
+:where([data-scope="tertiary"]) {
+    --color-background: var(--theme-tertiary-background);
+    --color-border: var(--theme-tertiary-border);
+    --color-foreground-primary: var(--theme-tertiary-foreground-primary);
+    --color-foreground-secondary: var(--theme-tertiary-foreground-secondary);
+    --color-foreground-tertiary: var(--theme-tertiary-foreground-tertiary);
+    --color-accent: var(--theme-tertiary-accent);
+    --color-action-background: var(--theme-tertiary-action-background);
+    --color-action-border: var(--theme-tertiary-action-border);
+    --color-action-foreground: var(--theme-tertiary-action-foreground);
+}

@@ -1,0 +1,112 @@
+:where(html, [data-theme="catppuccin"]) {
+    --theme-primary-background: light-dark(
+        oklch(0.958 0.006 264.532),
+        oklch(0.219 0.025 280.657)
+    );
+    --theme-primary-border: light-dark(
+        oklch(0.883 0.014 268.476),
+        oklch(0.294 0.035 276.937)
+    );
+    --theme-primary-foreground-primary: light-dark(
+        oklch(0.435 0.043 279.325),
+        oklch(0.871 0.048 273.665)
+    );
+    --theme-primary-foreground-secondary: light-dark(
+        oklch(0.492 0.038 279.299),
+        oklch(0.751 0.044 273.533)
+    );
+    --theme-primary-foreground-tertiary: light-dark(
+        oklch(0.547 0.034 279.084),
+        oklch(0.627 0.041 273.733)
+    );
+    --theme-primary-accent: light-dark(
+        oklch(0.555 0.25 297.016),
+        oklch(0.765 0.111 311.744)
+    );
+    --theme-primary-action-background: light-dark(
+        oklch(0.555 0.25 297.016),
+        oklch(0.765 0.111 311.744)
+    );
+    --theme-primary-action-border: light-dark(
+        oklch(0.555 0.25 297.016),
+        oklch(0.765 0.111 311.744)
+    );
+    --theme-primary-action-foreground: light-dark(
+        oklch(0.958 0.006 264.532),
+        oklch(0.219 0.025 280.657)
+    );
+
+    --theme-secondary-background: light-dark(
+        oklch(0.933 0.009 264.521),
+        oklch(0.249 0.03 278.435)
+    );
+    --theme-secondary-border: light-dark(
+        oklch(0.858 0.017 271.198),
+        oklch(0.324 0.03 278.435)
+    );
+    --theme-secondary-foreground-primary: light-dark(
+        oklch(0.435 0.043 279.325),
+        oklch(0.871 0.048 273.665)
+    );
+    --theme-secondary-foreground-secondary: light-dark(
+        oklch(0.492 0.038 279.299),
+        oklch(0.751 0.044 273.533)
+    );
+    --theme-secondary-foreground-tertiary: light-dark(
+        oklch(0.547 0.034 279.084),
+        oklch(0.627 0.041 273.733)
+    );
+    --theme-secondary-accent: light-dark(
+        oklch(0.555 0.25 297.016),
+        oklch(0.765 0.111 311.744)
+    );
+    --theme-secondary-action-background: light-dark(
+        oklch(0.555 0.25 297.016),
+        oklch(0.765 0.111 311.744)
+    );
+    --theme-secondary-action-border: light-dark(
+        oklch(0.555 0.25 297.016),
+        oklch(0.765 0.111 311.744)
+    );
+    --theme-secondary-action-foreground: light-dark(
+        oklch(0.958 0.006 264.532),
+        oklch(0.219 0.025 280.657)
+    );
+
+    --theme-tertiary-background: light-dark(
+        oklch(0.906 0.012 264.507),
+        oklch(0.279 0.035 276.937)
+    );
+    --theme-tertiary-border: light-dark(
+        oklch(0.831 0.02 273.154),
+        oklch(0.354 0.035 276.937)
+    );
+    --theme-tertiary-foreground-primary: light-dark(
+        oklch(0.435 0.043 279.325),
+        oklch(0.871 0.048 273.665)
+    );
+    --theme-tertiary-foreground-secondary: light-dark(
+        oklch(0.492 0.038 279.299),
+        oklch(0.751 0.044 273.533)
+    );
+    --theme-tertiary-foreground-tertiary: light-dark(
+        oklch(0.547 0.034 279.084),
+        oklch(0.627 0.041 273.733)
+    );
+    --theme-tertiary-accent: light-dark(
+        oklch(0.555 0.25 297.016),
+        oklch(0.765 0.111 311.744)
+    );
+    --theme-tertiary-action-background: light-dark(
+        oklch(0.555 0.25 297.016),
+        oklch(0.765 0.111 311.744)
+    );
+    --theme-tertiary-action-border: light-dark(
+        oklch(0.555 0.25 297.016),
+        oklch(0.765 0.111 311.744)
+    );
+    --theme-tertiary-action-foreground: light-dark(
+        oklch(0.958 0.006 264.532),
+        oklch(0.219 0.025 280.657)
+    );
+}

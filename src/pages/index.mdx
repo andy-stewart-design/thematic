@@ -4,7 +4,7 @@ layout: ../components/layout/index.astro
 
 # Thematic
 
-This is my attempt to outline a framework for a simple, flexible theme system for user interfaces. The practical goals of this work is to make adding a new theme a boring, well-defined task, and to make applying that theme at a component level transparent and predictable.
+This is my attempt to sketch out a framework for a simple, flexible theme system for user interfaces. The practical goals of this work are to make adding a new theme a boring, well-defined task, and to make applying that theme at a component level transparent and predictable.
 
 This framework, at the level of abstraction described in this article, intentionally does not prescribe which tokens a theme must require. In other words, it does not attempt to define the **theme contract**. It instead provides a structure for each project to formalize that contract internally.
 
@@ -20,7 +20,7 @@ A useful shorthand is: **the theme provides the options, the scope selects an op
 
 When we talk about an element‘s mode, we‘re referring to its overall visual context rather than any one specific concern. An element can inherit its mode completely or override any of its three constituent parts individually. Once you are able to resolve all three variables, you can know with certainty how a component should look.
 
-before we get into the details of the system, let‘s look at these ideas in practice. If you prefer to see this demo as a full-page experience, you can do so [here](/simple-example). You can see the source code [here](https://github.com/andy-stewart-design/thematic/tree/main/src/components/simple-example).
+before we get into the details of the system, let‘s look at these ideas in practice. If you prefer, you can view this demo as a [full-page experience](/simple-example), or check out the [source code](https://github.com/andy-stewart-design/thematic/tree/main/src/components/simple-example).
 
 <iframe
   id="inlineFrameExample"
@@ -65,7 +65,7 @@ Without `data-scheme`, the browser follows the system preference. Because these 
 </html>
 ```
 
-One important design requirement of this system is that **all themes must provide both color schemes**. There is no way to support falling back to a default theme without introducing an additional layer of the design tokens, which causes the complexity of the system to grow explonentially and is fundamentally at odds with a core goal of this system.
+One important design requirement of this system is that **all themes must provide both color schemes**. There is no way to support falling back to a default theme without introducing an additional layer of the design tokens, which causes the complexity of the system to grow exponentially and is fundamentally at odds with a core goal of this system.
 
 As such, themes do not need separate light and dark selectors. With `light-dark`, we are able to encapsulate both values in a single token:
 
